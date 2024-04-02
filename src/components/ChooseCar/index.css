@@ -1,18 +1,20 @@
-.choose-car{
+.choose-car {
     position: fixed;
     bottom: 1rem;
     display: flex;
     width: 100%;
     justify-content: center;
     align-items: center;
+    transition: all .3s ease-in-out;
+    transform: scale(1);
 }
 
-.choose-car-content{
+.choose-car-content {
     display: flex;
     gap: 1rem
 }
 
-.choose-car-content .car{
+.choose-car-content .car {
     background-color: white;
     border-radius: 50%;
     width: 5rem;
@@ -25,11 +27,78 @@
     outline: none;
 }
 
-.choose-car-content .car:hover{
+.choose-car-content .car:hover {
     outline: 5px solid darkred;
     background-color: rgba(255, 255, 255, 0.4);
 }
-.choose-car-content .my-car{
+
+.choose-car-content .my-car {
     outline: 5px solid darkred;
     background-color: rgba(255, 255, 255, 0.4);
+}
+
+.start-game {
+    position: fixed;
+    bottom: 10rem;
+}
+
+.start-game button {
+    text-transform: uppercase;
+    width: 10rem;
+    padding: 1rem;
+    border: none;
+    border-radius: 10px;
+    font-family: Bahnschrift, sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+    transition: all .2s ease-in-out;
+    cursor: pointer;
+}
+
+.start-game button:hover {
+    transform: scale(1.2);
+}
+
+.loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all .3s ease-in-out;
+}
+
+.loading .text {
+    font-family: Bahnschrift, sans-serif;
+    font-size: 24px;
+    transition: all .3s ease-in-out;
+    transform: scale(1);
+}
+
+.loading img {
+    transition: all .3s ease-in-out;
+    transform: scale(1);
+}
+
+.hide-loading .text {
+    transform: scale(0);
+}
+
+.hide-loading img {
+    transform: scale(0);
+}
+
+.hide-loading {
+    top: 100vh;
+}
+.show-loading {
+    top: 0;
+}
+.hide-choose-car{
+    transform: scale(0);
 }

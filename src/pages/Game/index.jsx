@@ -6,6 +6,9 @@ import Stats from "stats.js";
 import {Bloom, EffectComposer} from "@react-three/postprocessing";
 import ChooseCar from "../../components/ChooseCar/index.jsx";
 import GameScene from "../../components/Game"
+import {useMultiplayerState} from "playroomkit";
+import {Leva} from "leva";
+
 const Game = () => {
     useEffect(() => {
         const stats = new Stats();
@@ -26,11 +29,20 @@ const Game = () => {
         };
     }, []);
 
-
+    const [gameState] = useMultiplayerState("gameState", "lobby");
     return (
         <div className={"game"}>
             <Canvas shadows camera={{position: [5, 2, 5], fov: 70}}>
-                <Lobby/>
+                {
+                    gameState === "lobby" && (
+                        <Lobby/>
+                    )
+                }
+                {
+                    gameState === "game" && (
+                        <GameScene/>
+                    )
+                }
                 {
                     /*
                 <EffectComposer>
@@ -38,7 +50,6 @@ const Game = () => {
                 </EffectComposer>
                      */
                 }
-                <GameScene />
             </Canvas>
             <ChooseCar/>
         </div>
