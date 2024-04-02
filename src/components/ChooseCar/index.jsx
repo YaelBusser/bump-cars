@@ -1,6 +1,7 @@
 import {getState, myPlayer, usePlayersList} from "playroomkit";
 import "./index.css";
 import {CAR_MODELS} from "../Cars/index.jsx";
+import AudioManager, {audios} from "../../utils/AudioManager/index.jsx";
 
 const ChooseCar = () => {
     const me = myPlayer();
@@ -13,7 +14,10 @@ const ChooseCar = () => {
                         <div
                             className={`car ${(me?.getState("car") === model || (!me?.getState("car") && index === 0)) ? "my-car" : ""}`}
                             key={model}
-                            onClick={() => me?.setState("car", model)}
+                            onClick={() => {
+                                me?.setState("car", model);
+                                AudioManager(audios.starting_engine);
+                            }}
                         >
                             <img src={`/images/cars/${model}.png`}/>
                         </div>

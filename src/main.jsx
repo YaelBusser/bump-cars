@@ -5,7 +5,7 @@ import './index.css'
 import {insertCoin} from "playroomkit";
 
 insertCoin({
-    skipLobby: true
+    skipLobby: false
 }).then(() =>
     ReactDOM.createRoot(document.getElementById('root')).render(
         <React.StrictMode>
