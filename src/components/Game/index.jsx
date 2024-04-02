@@ -1,11 +1,13 @@
 import {Gltf} from "@react-three/drei";
-import {Physics} from "@react-three/rapier";
+import {Physics, RigidBody} from "@react-three/rapier";
 
 const Game = () => {
     return (
         <group>
-            <Physics>
-                <Gltf src={"/models/map.glb"}/>
+            <Physics debug>
+                <RigidBody colliders={"trimesh"}>
+                    <Gltf src={"/models/map.glb"}/>
+                </RigidBody>
             </Physics>
             <ambientLight color={"white"}/>
         </group>

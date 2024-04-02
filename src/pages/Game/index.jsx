@@ -30,9 +30,9 @@ const Game = () => {
     return (
         <div className={"game"}>
             <Canvas shadows camera={{position: [5, 2, 5], fov: 70}}>
+                <Lobby/>
                 {
                     /*
-                <Lobby/>
                 <EffectComposer>
                     <Bloom luminanceThreshold={1} intensity={0.2}/>
                 </EffectComposer>
