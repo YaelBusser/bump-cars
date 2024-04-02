@@ -9,8 +9,8 @@ import {Vector3} from "three";
 import "./index.css";
 import {randInt} from "three/src/math/MathUtils.js";
 
-const CAR_SPEED = {
-    police: 15,
+export const CAR_SPEED = {
+    police: 2,
     raceFuture: 5,
     sedanSports: 5,
     suvLuxury: 5,
@@ -31,26 +31,14 @@ const CarController = ({state, controls}) => {
             step: 0.1
         },
         carSpeed: {
-            value: 5,
+            value: 3,
             min: 0,
             max: 100,
-            step: 5
+            step: 0.01
         }
     });
 
     const lookAt = useRef(new Vector3(0, 0, 0));
-    const respawn = () => {
-        if (isHost()) {
-            car.current.setTranslation({
-                x: randInt(-2, 2) * 4,
-                y: 2,
-                z: randInt(-2, 2) * 4,
-            });
-            car.current.setLinvel({ x: 0, y: 0, z: 0 });
-            car.current.setRotation({ x: 0, y: 0, z: 0, w: 1 });
-            car.current.setAngvel({ x: 0, y: 0, z: 0 });
-        }
-    };
     useFrame(({camera}, delta) => {
         if (!car.current) {
             return;
@@ -70,7 +58,7 @@ const CarController = ({state, controls}) => {
             const impulse = vec3({
                 x: 0,
                 y: 0,
-                z: (CAR_SPEED[carModel] || carSpeed) * direction
+                z: (CAR_SPEED[carModel] || carSpeed) * 2 * direction
             });
 
             const eulerRotation = euler().setFromQuaternion(quat(car.current.rotation()));
@@ -78,7 +66,6 @@ const CarController = ({state, controls}) => {
             car.current.applyImpulse(impulse, true);
         }
         car.current.setAngvel(currentRotationVelocity, true);
-
         // S'assurer de calculer une seule fois, donc passer par l'host
         if (isHost()) {
             state.setState("position", car.current.translation());
@@ -90,7 +77,23 @@ const CarController = ({state, controls}) => {
                 car.current.setRotation(state.getState("rotation"));
             }
         }
+        if(controls.isPressed("Respawn")){
+            respawn();
+        }
     }, []);
+
+    const respawn = () => {
+        if (isHost()) {
+            car.current.setTranslation({
+                x: randInt(-2, 2) * 4,
+                y: 2,
+                z: randInt(-2, 2) * 4,
+            });
+            car.current.setLinvel({ x: 0, y: 0, z: 0 });
+            car.current.setRotation({ x: 0, y: 0, z: 0, w: 1 });
+            car.current.setAngvel({ x: 0, y: 0, z: 0 });
+        }
+    };
     useEffect(() => {
         respawn();
     }, []);
@@ -115,7 +118,7 @@ const CarController = ({state, controls}) => {
                 <Cars model={carModel} scale={1.3}/>
                 {
                     me.id === state.id && (
-                        <PerspectiveCamera makeDefault position={[-0, 3, -5]} fov={70}/>
+                        <PerspectiveCamera makeDefault position={[-2, 3, -5]} fov={70}/>
                     )
                 }
             </RigidBody>

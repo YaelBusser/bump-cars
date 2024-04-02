@@ -8,6 +8,7 @@ import ChooseCar from "../../components/ChooseCar/index.jsx";
 import GameScene from "../../components/Game"
 import {useMultiplayerState} from "playroomkit";
 import {Leva} from "leva";
+import {Environment} from "@react-three/drei";
 
 const Game = () => {
     useEffect(() => {
@@ -32,6 +33,7 @@ const Game = () => {
     const [gameState] = useMultiplayerState("gameState", "lobby");
     return (
         <div className={"game"}>
+            <Leva hidden/>
             <Canvas shadows camera={{position: [5, 2, 5], fov: 70}}>
                 {
                     gameState === "lobby" && (
@@ -40,7 +42,10 @@ const Game = () => {
                 }
                 {
                     gameState === "game" && (
-                        <GameScene/>
+                        <>
+                            <Environment preset="city" background/>
+                            <GameScene/>
+                        </>
                     )
                 }
                 {

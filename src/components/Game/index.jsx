@@ -46,13 +46,13 @@ const Game = () => {
                 color="blue"
             />
             <directionalLight position={[10, 10, 10]} intensity={0.4} />
-            <Physics debug>
+            <Physics>
                 {
                     players.map(({state, controls}, index) => (
                         <CarController key={state.id} state={state} controls={controls}/>
                     ))
                 }
-                <RigidBody type={"fixed"}>
+                <RigidBody type={"fixed"} colliders={"hull"}>
                     <Gltf src={"/models/map.glb"} scale={[scaleMap, scaleMap, scaleMap]}/>
                 </RigidBody>
                 <RigidBody
@@ -62,7 +62,7 @@ const Game = () => {
                     position-y={-5}
                     name={"void"}
                 >
-                    <CuboidCollider args={[100, -3, 100]} />
+                    <CuboidCollider args={[100, 3, 100]} />
                 </RigidBody>
             </Physics>
             <ambientLight intensity={0.5}/>
