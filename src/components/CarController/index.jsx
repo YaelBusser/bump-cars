@@ -31,7 +31,7 @@ const CarController = ({state, controls}) => {
             step: 0.1
         },
         carSpeed: {
-            value: 1.5,
+            value: 3,
             min: 0,
             max: 100,
             step: 0.005

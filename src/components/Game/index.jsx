@@ -1,4 +1,4 @@
-import {Environment, Gltf, Html, Lightformer, OrbitControls, Sphere} from "@react-three/drei";
+import {Box, Environment, Gltf, Html, Lightformer, OrbitControls, Sphere} from "@react-three/drei";
 import {CuboidCollider, Physics, RigidBody, BallCollider} from "@react-three/rapier";
 import {useEffect, useRef, useState} from "react";
 import {Joystick, onPlayerJoin} from "playroomkit";
@@ -21,20 +21,13 @@ const Game = () => {
         }, []);
     }, []);
     const ballRef = useRef();
-    const [ballPosition, setBallPosition] = useState([0, 0, 0]);
     useFrame(() => {
-        // Vérifier si la référence à la balle existe
-        console.log(ballRef.current.position.x)
+        //console.log(ballRef.current.position);
         if (ballRef.current) {
-            const position = ballRef.current.position;
-            // Mettre à jour l'état avec la nouvelle position
-            setBallPosition(position);
+            const position = ballRef.current;
         }
-        //console.log(ballRef.current);
     });
-    useEffect(() => {
-        console.log(ballRef);
-    }, []);
+
     const scaleMap = 5;
     return (
         <group>
@@ -72,27 +65,17 @@ const Game = () => {
                     <Gltf src={"/models/map.glb"} scale={[scaleMap, scaleMap, scaleMap]}/>
                 </RigidBody>
                 <RigidBody
-                    type={"fixed"}
-                    sensor
-                    colliders={false}
-                    position-y={-5}
-                    name={"void"}
-                >
-                    <CuboidCollider args={[100, 3, 100]}/>
-                </RigidBody>
-                <RigidBody
-                    type={"dynamic"}
                     colliders={"ball"}
-                    gravityScale={1}
-                    position={[0,0.5,0]}
+                    type={"dynamic"}
                 >
-                    <Sphere ref={ballRef} args={[0.5,50,50]}>
-                        <meshNormalMaterial />
-                    </Sphere>
+                    <mesh position={[0, 0.7, 0]}>
+                        <sphereGeometry ref={ballRef} args={[0.5, 50, 50]}>
+                            <meshNormalMaterial/>
+                        </sphereGeometry>
+                    </mesh>
                 </RigidBody>
             </Physics>
-            <ambientLight intensity={0.5}/>
-            <Html position={[0, 2, 0]}>{`Position de la balle : ${ballPosition.x}`}</Html>
+            <ambientLight intensity={1}/>
         </group>
     )
 }
