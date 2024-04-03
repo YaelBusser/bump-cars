@@ -52,7 +52,7 @@ const Game = () => {
                         <CarController key={state.id} state={state} controls={controls}/>
                     ))
                 }
-                <RigidBody type={"fixed"} colliders={"hull"}>
+                <RigidBody type={"fixed"} colliders={"trimesh"}>
                     <Gltf src={"/models/map.glb"} scale={[scaleMap, scaleMap, scaleMap]}/>
                 </RigidBody>
                 <RigidBody

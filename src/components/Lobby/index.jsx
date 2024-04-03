@@ -1,11 +1,11 @@
-import {Billboard, Box, CameraControls, OrbitControls, PerspectiveCamera, Text, useGLTF} from "@react-three/drei";
+import {Billboard, Box, CameraControls, Html, OrbitControls, PerspectiveCamera, Text, useGLTF} from "@react-three/drei";
 import {useEffect, useRef, useState} from "react";
 import {myPlayer, usePlayersList} from "playroomkit";
 import {useFrame, useThree} from "@react-three/fiber";
 import {Vector3} from "three";
 import Cars from "../Cars";
 import {degToRad} from "three/src/math/MathUtils.js";
-
+import "./index.css";
 const Lobby = () => {
     const {scene} = useGLTF("/models/lobby.glb");
     useEffect(() => {
@@ -69,12 +69,13 @@ const Lobby = () => {
                             <group position-y={player.id === me?.id ? 0.2 : 0}>
                                 <Cars model={player.getState("car")}/>
                                 <Billboard position-y={2}>
-                                    <Text
-                                        fontSize={0.2}
-                                    >
-                                        {player.state.profile.name || player.state.name || "Unknown"}
-                                        <meshBasicMaterial color={"white"}/>
-                                    </Text>
+                                    <Html>
+                                        <div className={"lobby-profile"}>
+                                            <img src={player.state.profile.photo}/>
+                                            <p style={{color: player.state.profile.color || "white"}}>{player.state.profile.name || player.state.name || "Unknown"}</p>
+                                        </div>
+                                    </Html>
+                                    <meshBasicMaterial color={"white"}/>
                                 </Billboard>
                             </group>
                             {

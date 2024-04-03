@@ -77,7 +77,7 @@ const CarController = ({state, controls}) => {
                 car.current.setRotation(state.getState("rotation"));
             }
         }
-        if(controls.isPressed("Respawn")){
+        if (controls.isPressed("Respawn")) {
             respawn();
         }
     }, []);
@@ -86,16 +86,17 @@ const CarController = ({state, controls}) => {
         if (isHost()) {
             car.current.setTranslation({
                 x: randInt(-2, 2) * 4,
-                y: 2,
+                y: 0.25,
                 z: randInt(-2, 2) * 4,
             });
-            car.current.setLinvel({ x: 0, y: 0, z: 0 });
-            car.current.setRotation({ x: 0, y: 0, z: 0, w: 1 });
-            car.current.setAngvel({ x: 0, y: 0, z: 0 });
+            car.current.setLinvel({x: 0, y: 0, z: 0});
+            car.current.setRotation({x: 0, y: 0, z: 0, w: 1});
+            car.current.setAngvel({x: 0, y: 0, z: 0});
         }
     };
     useEffect(() => {
         respawn();
+        console.log(state);
     }, []);
     return (
         <group position-y={5}>
@@ -111,9 +112,12 @@ const CarController = ({state, controls}) => {
                 }}
             >
                 <Html>
-                    <h1 className={"nickname"}>
-                        {state.state.name || state.state.profile.name}
-                    </h1>
+                    <div className={"game-profile"}>
+                        <img className={"profile-picture"} src={state.state.profile.photo}/>
+                        <h1 className={"nickname"} style={{color: state.state.profile.color || "white"}}>
+                            {state.state.name || state.state.profile.name}
+                        </h1>
+                    </div>
                 </Html>
                 <Cars model={carModel} scale={1.3}/>
                 {

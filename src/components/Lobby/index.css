@@ -1,14 +1,4 @@
-.nickname{
-    color: white;
-    font-family: Bahnschrift, sans-serif;
-    user-select: none;
-}
-.profile-picture {
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-}
-.game-profile{
+.lobby-profile{
     display: flex;
     justify-content: center;
     align-items: center;
