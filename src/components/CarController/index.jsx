@@ -25,46 +25,53 @@ const CarController = ({state, controls}) => {
     const car = useRef();
     const {rotationSpeed, carSpeed} = useControls({
         rotationSpeed: {
-            value: 3,
+            value: 500,
             min: 0,
             max: 10,
             step: 0.1
         },
         carSpeed: {
-            value: 3,
+            value: 1.5,
             min: 0,
             max: 100,
-            step: 0.01
+            step: 0.005
         }
     });
 
     const lookAt = useRef(new Vector3(0, 0, 0));
+    const isJumping = useRef(false);
+    let isOnGround;
     useFrame(({camera}, delta) => {
         if (!car.current) {
             return;
         }
-
+        const currentPosition = car.current.translation();
+        isOnGround = Math.abs(currentPosition.y) < 0.5;
+        if (isOnGround) {
+            isJumping.current = false;
+        }
         if (me.id === state?.id) {
             const targetLookAt = vec3(car.current.translation());
             lookAt.current.lerp(targetLookAt, 0.1);
             camera.lookAt(lookAt.current);
         }
         const currentRotationVelocity = car.current.angvel();
-        if (controls.isJoystickPressed()) {
+        if (controls.isJoystickPressed() && isOnGround) {
             const angle = controls.angle();
-            const direction = angle > Math.PI / 2 ? 1 : -1;
+            const direction = angle > Math.PI / 2 ? 0.3 : -0.3;
             currentRotationVelocity.y = -direction * Math.sin(angle) * rotationSpeed;
 
             const impulse = vec3({
                 x: 0,
                 y: 0,
-                z: (CAR_SPEED[carModel] || carSpeed) * 2 * direction
+                z: (CAR_SPEED[carModel] || carSpeed) * direction
             });
 
             const eulerRotation = euler().setFromQuaternion(quat(car.current.rotation()));
             impulse.applyEuler(eulerRotation);
             car.current.applyImpulse(impulse, true);
         }
+
         car.current.setAngvel(currentRotationVelocity, true);
         // S'assurer de calculer une seule fois, donc passer par l'host
         if (isHost()) {
@@ -81,7 +88,20 @@ const CarController = ({state, controls}) => {
             respawn();
         }
     }, []);
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.code === "Space" && isOnGround && me?.id === state?.id) {
+                const impulse = vec3({x: 0, y: 10, z: 0});
+                car.current.applyImpulse(impulse, true);
+            }
+        };
 
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
     const respawn = () => {
         if (isHost()) {
             car.current.setTranslation({
@@ -90,7 +110,7 @@ const CarController = ({state, controls}) => {
                 z: randInt(-2, 2) * 4,
             });
             car.current.setLinvel({x: 0, y: 0, z: 0});
-            car.current.setRotation({x: 0, y: 0, z: 0, w: 1});
+            car.current.setRotation({x: 0, y: 0, z: 0, w: 0.5});
             car.current.setAngvel({x: 0, y: 0, z: 0});
         }
     };
@@ -111,7 +131,7 @@ const CarController = ({state, controls}) => {
                     }
                 }}
             >
-                <Html>
+                <Html position-y={1}>
                     <div className={"game-profile"}>
                         <img className={"profile-picture"} src={state.state.profile.photo}/>
                         <h1 className={"nickname"} style={{color: state.state.profile.color || "white"}}>
@@ -119,10 +139,10 @@ const CarController = ({state, controls}) => {
                         </h1>
                     </div>
                 </Html>
-                <Cars model={carModel} scale={1.3}/>
+                <Cars model={carModel} scale={0.5}/>
                 {
                     me.id === state.id && (
-                        <PerspectiveCamera makeDefault position={[-2, 3, -5]} fov={70}/>
+                        <PerspectiveCamera makeDefault position={[-2, 1, -5]} near={1} fov={50}/>
                     )
                 }
             </RigidBody>
