@@ -43,7 +43,7 @@ const ChooseCar = () => {
             <div className={`loading ${!loading ? "hide-loading" : "show-loading"}`}>
                 <p className={"text"}>VROOM, VROOM</p> <img src={`/images/cars/${CAR_MODELS[loadingContent]}.png`} alt={"images cars"}/>
             </div>
-            <div className={`choose-car ${gameState === "game" ? "hide-choose-car" : ""}`}>
+            <div className={`choose-car`}>
                 <div className={"choose-car-content"}>
                     {
                         CAR_MODELS.map((model, index) => (

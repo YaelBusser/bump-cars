@@ -10,14 +10,18 @@
 }
 
 .choose-car-content {
+    width: 80%;
     display: flex;
-    gap: 1rem
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
 }
 
 .choose-car-content .car {
     background-color: white;
     border-radius: 50%;
-    width: 5rem;
+    min-width: 5rem;
     height: 5rem;
     display: flex;
     justify-content: center;
@@ -39,7 +43,7 @@
 
 .start-game {
     position: fixed;
-    bottom: 10rem;
+    bottom: 12rem;
 }
 
 .start-game button {

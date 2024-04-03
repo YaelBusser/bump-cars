@@ -4,11 +4,25 @@ import {useEffect} from "react";
 import {MeshStandardMaterial} from "three";
 
 export const CAR_MODELS = [
+    "ambulance",
+    "delivery",
+    "deliveryFlat",
+    "firetruck",
+    "garbageTruck",
+    "hatchbackSports",
     "police",
+    "race",
     "raceFuture",
+    "sedan",
     "sedanSports",
+    "suv",
     "suvLuxury",
+    "taxi",
+    "tractor",
+    "tractorPolice",
+    "tractorShovel",
     "truck",
+    "truckFlat",
     "van"
 ]
 
